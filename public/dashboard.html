@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEMPkCd6fFhc4uGa7_LgiMVxlUMQ9t7DmxKA&s') no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+            padding: 20px;
+            color: yellow;
+        }
+
+        .container {
+            padding: 20px;
+            width: 350px;
+            margin: auto;
+            border-radius: 12px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Credit Card Style */
+        .credit-card {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            font-size: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .credit-card .card-logo {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            width: 40px;
+        }
+
+        .credit-card .card-number {
+            font-size: 16px;
+            margin-top: 15px;
+            color: red;
+        }
+
+        .credit-card .card-balance {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 5px;
+            color: yellow;
+        }
+
+        /* Buttons */
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        button.logout {
+            background: red;
+        }
+
+        button.logout:hover {
+            background: darkred;
+        }
+
+        /* WhatsApp Icon */
+        .whatsapp-icon {
+            display: block;
+            margin: 15px auto;
+            width: 50px;
+            height: 50px;
+        }
+
+        h3 {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Notification Badge -->
+        <div class="notification">₦90,000 Welcome Bonus! 🎉</div>
+
+        <!-- Credit Card Balance -->
+        <div class="credit-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxncGODcmYodYFnALJqOA-G7NrY6GRUUgRrg&s" alt="Bank Logo" class="card-logo">
+            <p class="card-number">**** **** **** 4264</p>
+            <p>Balance:</p>
+            <p class="card-balance">₦<span id="balance">0</span></p>
+        </div>
+
+        <h3>Welcome, <span id="fullName">Loading...</span></h3>
+
+        <button onclick="window.location.href='add.html'">Deposit</button>
+        <button onclick="window.location.href='transfer.html'">Transfer</button>
+        <button onclick="window.location.href='history.html'">Transaction History</button>
+        <button onclick="window.location.href='about.html'">About</button>
+        
+        <!-- Updated Earn Button -->
+        <button onclick="window.location.href='earn.html'">Earn</button>
+
+        <button class="logout" onclick="logout()">Logout</button>
+
+        <a href="https://wa.me/447562753148" target="_blank">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSz8hx64yN_GSXMpFmCyfYs1W2PxXv50zEZsw&s" alt="WhatsApp" class="whatsapp-icon">
+        </a>
+    </div>
+
+    <script>
+        function fetchDashboard() {
+            fetch("/dashboard", { credentials: "include" })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Session expired. Redirecting to login...");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById("fullName").textContent = data.fullName;
+                    document.getElementById("balance").textContent = data.balance.toLocaleString();
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert(error.message);
+                    window.location.href = "login.html";
+                });
+        }
+
+        function logout() {
+            fetch("/logout", { method: "POST", credentials: "include" })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    window.location.href = "login.html";
+                })
+                .catch(error => console.error("Error:", error));
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchDashboard);
+    </script>
+</body>
+
+</html>

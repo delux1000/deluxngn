@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register | Delux</title>
+
+    <style>
+
+        body {
+
+            margin: 0;
+
+            padding: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbk8g0o6BwULaLNGc5eptEKCUYB_CRmvVPZg&s') no-repeat center center/cover;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+
+        }
+
+        .container {
+
+            background: rgba(0, 0, 0, 0.8);
+
+            padding: 30px;
+
+            border-radius: 10px;
+
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+
+            text-align: center;
+
+            width: 90%;
+
+            max-width: 350px;
+
+            color: white;
+
+        }
+
+        h2 {
+
+            margin-bottom: 20px;
+
+            font-size: 24px;
+
+        }
+
+        input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            margin: 10px 0;
+
+            border: none;
+
+            border-radius: 5px;
+
+            font-size: 16px;
+
+            background: rgba(255, 255, 255, 0.2);
+
+            color: white;
+
+        }
+
+        input::placeholder {
+
+            color: rgba(255, 255, 255, 0.7);
+
+        }
+
+        button {
+
+            width: 100%;
+
+            padding: 12px;
+
+            background: #ffcc00;
+
+            border: none;
+
+            border-radius: 5px;
+
+            font-size: 18px;
+
+            color: black;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+        button:hover {
+
+            background: #e6b800;
+
+        }
+
+        #message {
+
+            margin-top: 15px;
+
+            font-size: 14px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>Welcome to Delux</h2>
+
+        <p>Register to start using your secure wallet.</p>
+
+        <form id="registerForm">
+
+            <input type="text" id="fullName" placeholder="Full Name" required>
+
+            <input type="tel" id="phone" placeholder="Phone Number" required>
+
+            <input type="password" id="pin" placeholder="6-Digit PIN" required minlength="6" maxlength="6">
+
+            <button type="submit">Register</button>
+
+        </form>
+
+        <p id="message"></p>
+
+    </div>
+
+    <script>
+
+        document.getElementById("registerForm").addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const fullName = document.getElementById("fullName").value;
+
+            const phone = document.getElementById("phone").value;
+
+            const pin = document.getElementById("pin").value;
+
+            const response = await fetch("/register", {
+
+                method: "POST",
+
+                headers: { "Content-Type": "application/json" },
+
+                body: JSON.stringify({ fullName, phone, pin })
+
+            });
+
+            const data = await response.json();
+
+            document.getElementById("message").textContent = data.message;
+
+            if (response.ok) {
+
+                setTimeout(() => {
+
+                    window.location.href = data.redirect;
+
+                }, 2000);
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>

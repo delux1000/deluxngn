@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delux Cash - Welcome</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD5tMzAO89G_cuD243K_dpSYxg20GOcPdUrw&s') no-repeat center center fixed;
+      background-size: cover;
+      text-align: center;
+      color: white;
+    }
+    .container {
+      max-width: 450px;
+      margin: 60px auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    #welcome-message {
+      font-size: 16px;
+    }
+    .ads, .testimonials {
+      margin-top: 20px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+    }
+    .ads p, .testimonials p {
+      font-style: italic;
+      font-size: 14px;
+      margin: 5px 0;
+    }
+    .buttons {
+      margin-top: 20px;
+    }
+    button {
+      background: #ffcc00;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      color: black;
+      cursor: pointer;
+      margin: 10px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #ff9900;
+    }
+    .whatsapp-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 35px;
+      text-decoration: none;
+      color: #25D366;
+      transition: 0.3s;
+    }
+    .whatsapp-icon:hover {
+      color: #1EBEA5;
+    }
+    .download-app {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      font-size: 16px;
+      background: #ffcc00;
+      color: black;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+    .download-app:hover {
+      background: #ff9900;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Download App Icon with Text -->
+  <a href="#" class="download-app" id="downloadBtn" title="Download App">⬇️ Download App</a>
+
+  <div class="container">
+    <h1>Welcome to Delux Cash</h1>
+    <p id="welcome-message">Loading...</p>
+
+    <!-- Dynamic Advertisements -->
+    <div class="ads" id="ads">
+      <p>📢 Loading latest offers...</p>
+    </div>
+
+    <!-- Dynamic Testimonials -->
+    <div class="testimonials" id="testimonials">
+      <h2>What Our Users Say</h2>
+      <p>⭐ Loading testimonials...</p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons">
+      <button onclick="navigate('register.html')">Join Us</button>
+      <button onclick="navigate('login.html')">Login</button>
+      <button onclick="navigate('about.html')">About</button>
+    </div>
+  </div>
+
+  <!-- WhatsApp Contact -->
+  <a href="https://wa.me/447562753148" class="whatsapp-icon">💬</a>
+
+  <script>
+    function navigate(page) {
+      window.location.href = page;
+    }
+
+    // Welcome Messages
+    const welcomeMessages = [
+      "Join us today and receive 90,000 naira instantly!",
+      "Make money by listening to music, watching videos, and streaming!",
+      "Earn more with remote jobs online — sign up now!",
+      "Unlock bonuses with every first withdrawal you make.",
+      "Delux Cash is your trusted online earning platform!"
+    ];
+    let currentWelcome = 0;
+    function rotateWelcome() {
+      document.getElementById("welcome-message").textContent = welcomeMessages[currentWelcome];
+      currentWelcome = (currentWelcome + 1) % welcomeMessages.length;
+    }
+    rotateWelcome();
+    setInterval(rotateWelcome, 5000);
+
+    // Dynamic Advertisements
+    const adsList = [
+      "📢 Secure your funds with Delux Cash!",
+      "📢 Fast and seamless withdrawals & deposits!",
+      "📢 Earn rewards for referring friends!",
+      "📢 Trusted by thousands of Nigerians!",
+      "📢 Your financial security, our priority!"
+    ];
+    document.getElementById("ads").innerHTML = `<p>${adsList[Math.floor(Math.random() * adsList.length)]}</p>`;
+
+    // Dynamic Testimonials
+    const testimonialsList = [
+      "⭐ 'Delux Cash is the best platform I've used!' - Adewale Johnson",
+      "⭐ 'Fast and reliable transactions every time!' - Chika Okafor",
+      "⭐ 'My financial life has changed completely!' - Funke Adetayo",
+      "⭐ 'I trust Delux Cash with my business funds!' - Tunde Adebayo",
+      "⭐ 'Simple, secure, and efficient banking experience!' - Blessing Eze",
+      "⭐ 'I earn while listening to music! Amazing!' - Musa Ibrahim",
+      "⭐ 'Great support and fast payment every time.' - Anita Ugochukwu",
+      "⭐ 'Remote tasks helped me earn daily from home!' - Joseph Adebanjo"
+    ];
+    function updateTestimonial() {
+      const index = Math.floor(Math.random() * testimonialsList.length);
+      document.getElementById("testimonials").innerHTML = `<h2>What Our Users Say</h2><p>${testimonialsList[index]}</p>`;
+    }
+    updateTestimonial();
+    setInterval(updateTestimonial, 7000);
+
+    // Download Button with Pop-up
+    document.getElementById("downloadBtn").addEventListener("click", function(e) {
+      e.preventDefault();
+      alert("App download starting...");
+      setTimeout(() => {
+        window.location.href = "https://drive.google.com/file/d/1296kx13_JiEX2db67GDLW_mxHQqwdjww/view?usp=drivesdk";
+      }, 1000);
+    });
+  </script>
+
+</body>
+</html>

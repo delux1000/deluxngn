@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wire Funds</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+    form { max-width: 400px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    input, button { width: 100%; margin-top: 10px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #45a049; }
+  </style>
+</head>
+<body>
+
+<h2>Wire (Deposit) Funds</h2>
+<form id="wireForm">
+  <input type="text" id="phone" placeholder="User Phone Number" required />
+  <input type="number" id="amount" placeholder="Amount to Credit" required />
+  <button type="submit">Send Funds</button>
+  <p id="status"></p>
+</form>
+
+<script>
+document.getElementById('wireForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const phone = document.getElementById('phone').value.trim();
+  const amount = parseFloat(document.getElementById('amount').value);
+
+  const response = await fetch('/wire', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phone, amount })
+  });
+
+  const result = await response.json();
+  document.getElementById('status').textContent = result.message;
+});
+</script>
+
+</body>
+</html>

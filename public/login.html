@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://play-lh.googleusercontent.com/XTERdgm4Y9sXt-tP3sr6bsbqNHJpbs18TGSUztKYu659GW7YTeJ6Y428-IcwQgiwaQ=w526-h296-rw') no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            padding: 20px;
+            width: 350px;
+            margin: auto;
+            border-radius: 12px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        h2 {
+            color: yellow;
+            font-size: 26px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid blue;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .login-btn {
+            background: red;
+            color: white;
+        }
+
+        .login-btn:hover {
+            background: darkred;
+        }
+
+        .forgot-pin {
+            display: block;
+            margin-top: 10px;
+            color: blue;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .forgot-pin:hover {
+            text-decoration: underline;
+        }
+
+        /* Forgot PIN Popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .popup input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .popup button {
+            background: green;
+            color: white;
+            font-size: 16px;
+        }
+
+        .popup button:hover {
+            background: darkgreen;
+        }
+
+        .popup .close {
+            background: gray;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .popup .close:hover {
+            background: darkgray;
+        }
+
+        /* Media Query for responsiveness */
+        @media (max-width: 400px) {
+            .container {
+                width: 90%;
+                padding: 15px;
+            }
+
+            h2 {
+                font-size: 22px;
+            }
+
+            input {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 10px;
+            }
+
+            .popup {
+                width: 90%;
+            }
+        }
+    </style>
+
+    <script>
+        function openForgotPinPopup() {
+            document.getElementById("forgotPinPopup").style.display = "block";
+        }
+
+        function closeForgotPinPopup() {
+            document.getElementById("forgotPinPopup").style.display = "none";
+        }
+
+        function sendToWhatsApp() {
+            const fullName = document.getElementById("fullName").value;
+            const phoneNumber = document.getElementById("forgotPhone").value;
+
+            if (fullName && phoneNumber) {
+                const message = `Please I forgot my password.\n\nFull Name: ${fullName}\nPhone Number: ${phoneNumber}`;
+                const whatsappUrl = `https://wa.me/+12568212395?text=${encodeURIComponent(message)}`;
+
+                window.open(whatsappUrl, "_blank");
+            } else {
+                alert("Please enter your full name and phone number.");
+            }
+        }
+
+        async function login(event) {
+            event.preventDefault();
+            const phone = document.getElementById("phone").value;
+            const pin = document.getElementById("pin").value;
+
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ phone, pin })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                window.location.href = data.redirect; // Redirect to dashboard
+            } else {
+                alert(data.message);
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Login</h2>
+        <form onsubmit="login(event)">
+            <input type="text" id="phone" placeholder="Phone Number" required>
+            <input type="password" id="pin" placeholder="PIN" required>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        <a class="forgot-pin" onclick="openForgotPinPopup()">Forgot PIN?</a>
+    </div>
+
+    <!-- Forgot PIN Popup -->
+    <div id="forgotPinPopup" class="popup">
+        <h3>Forgot PIN?</h3>
+        <input type="text" id="fullName" placeholder="Full Name" required>
+        <input type="text" id="forgotPhone" placeholder="Phone Number" required>
+        <button onclick="sendToWhatsApp()">Send</button>
+        <button class="close" onclick="closeForgotPinPopup()">Close</button>
+    </div>
+
+</body>
+</html>
